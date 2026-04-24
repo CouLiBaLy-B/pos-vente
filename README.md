@@ -20,7 +20,7 @@ Application de point de vente complète avec frontend React/TypeScript et backen
 
 ```bash
 # Cloner le dépôt
-git clone <url-du-repo>
+git clone https://github.com/CouLiBaLy-B/pos-vente.git
 cd pos-vente
 
 # Lancer tous les services (base de données, backend, frontend)
