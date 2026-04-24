@@ -13,10 +13,39 @@ Application de point de vente complète avec frontend React/TypeScript et backen
 
 ## Prérequis
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) ≥ 4.x
-- Docker Compose v2 (inclus dans Docker Desktop)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) ≥ 4.x (seul prérequis)
 
-## Démarrage rapide
+## Installation rapide (sans cloner le dépôt)
+
+2 commandes suffisent — Docker se charge de tout télécharger.
+
+**Linux / macOS / Git Bash :**
+```bash
+curl -o docker-compose.yml https://raw.githubusercontent.com/CouLiBaLy-B/pos-vente/main/docker-compose.prod.yml
+docker compose up -d
+```
+
+**PowerShell (Windows) :**
+```powershell
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/CouLiBaLy-B/pos-vente/main/docker-compose.prod.yml -OutFile docker-compose.yml
+docker compose up -d
+```
+
+L'application est disponible sur **http://localhost** après ~30 secondes (le temps que PostgreSQL démarre).
+
+Pour arrêter :
+```bash
+docker compose down
+```
+
+Pour tout supprimer (y compris les données) :
+```bash
+docker compose down -v
+```
+
+---
+
+## Démarrage depuis le code source
 
 ```bash
 # Cloner le dépôt

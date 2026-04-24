@@ -1,11 +1,14 @@
-# Production — utilise les images publiées sur GHCR
-# Usage :
-#   GHCR_OWNER=coulibaly-b IMAGE_TAG=latest docker compose -f docker-compose.prod.yml up -d
+# ============================================================
+#  Coulibaly & Frères — Point de Vente (POS)
+#  Prérequis : Docker Desktop installé et démarré, c'est tout.
 #
-# Variables d'environnement à définir (via un fichier .env.prod ou en CLI) :
-#   GHCR_OWNER   – votre utilisateur/org GitHub (ex : coulibaly-b)
-#   IMAGE_TAG    – tag de l'image (ex : latest ou le SHA du commit)
-#   DB_PASSWORD  – mot de passe PostgreSQL (ne pas laisser la valeur par défaut en prod)
+#  Installation en 2 commandes :
+#
+#    curl -o docker-compose.yml https://raw.githubusercontent.com/CouLiBaLy-B/pos-vente/main/docker-compose.prod.yml
+#    docker compose up -d
+#
+#  Application disponible sur http://localhost
+# ============================================================
 
 services:
   postgres:
@@ -15,7 +18,7 @@ services:
     environment:
       POSTGRES_DB: pos_db
       POSTGRES_USER: pos_user
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-pos_secret}
+      POSTGRES_PASSWORD: pos_secret
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -28,15 +31,15 @@ services:
       retries: 10
 
   backend:
-    image: ghcr.io/${GHCR_OWNER:-coulibaly-b}/pos-vente-backend:${IMAGE_TAG:-latest}
+    image: ghcr.io/coulibaly-b/pos-vente-backend:latest
     container_name: coulibaly_pos_api
     restart: unless-stopped
     environment:
-      DB_HOST: postgres        # ← nom du service Docker, pas localhost
+      DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: pos_db
       DB_USER: pos_user
-      DB_PASSWORD: ${DB_PASSWORD:-pos_secret}
+      DB_PASSWORD: pos_secret
       PORT: 3001
     networks:
       - pos_net
@@ -45,11 +48,11 @@ services:
         condition: service_healthy
 
   frontend:
-    image: ghcr.io/${GHCR_OWNER:-coulibaly-b}/pos-vente-frontend:${IMAGE_TAG:-latest}
+    image: ghcr.io/coulibaly-b/pos-vente-frontend:latest
     container_name: coulibaly_pos_app
     restart: unless-stopped
     ports:
-      - "${FRONTEND_PORT:-80}:80"
+      - "80:80"
     networks:
       - pos_net
     depends_on:
